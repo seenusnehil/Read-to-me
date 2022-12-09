@@ -1,9 +1,18 @@
 import requests
 
-url = "https://api.uberduck.ai/reference-audio"
+url = "https://api.uberduck.ai/speak"
 
-headers = {"accept": "application/json"}
+payload = {
+    "speech": "Hello, We are the group participating in AssemblyAI hackathon",
+    "voice": "lj",
+    "pace": 1
+}
+headers = {
+    "accept": "application/json",
+    "uberduck-id": "anonymous",
+    "content-type": "application/json"
+}
 
-response = requests.get(url, headers=headers)
+response = requests.post(url, json=payload, headers=headers)
 
 print(response.text)
