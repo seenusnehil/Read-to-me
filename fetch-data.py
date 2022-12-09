@@ -1,6 +1,6 @@
 import requests
 
-url = "https://api.uberduck.ai/speak-status?uuid=97d5c292-60c8-4de1-9847-6bf659ff08f5"
+url = "https://api.uberduck.ai/speak-status?uuid=444e3331-9a59-4440-8d0a-fca3d3291bf8"
 
 headers = {"accept": "application/json"}
 
