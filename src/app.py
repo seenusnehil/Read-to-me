@@ -7,11 +7,19 @@ st.set_page_config(page_title='OCR',page_icon=':smiley:',initial_sidebar_state='
 
 
 def main():
+
+    HTML = """
+    <div style="background-color:#464e5f;padding:10px;border-radius:10px">
+    <h1 style="color:white;text-align:center;">OCR App </h1>
+    </div>
+    """
+
     side_bar_list=['Home','Image','Pdf']
     menu_bar=st.sidebar.selectbox('Menu',side_bar_list)
 
     if menu_bar=='Home':
         st.subheader('Home Page')
+        stc.html(HTML)
 
         
 
@@ -26,6 +34,10 @@ def main():
         st.subheader('Upload Pdf')
 
         uploaded_pdf=st.file_uploader('Upload your Pdf file',type='pdf',accept_multiple_files=False)
+
+
+        
+
         # st.write(uploaded_pdf)
 
 if __name__=='__main__':
