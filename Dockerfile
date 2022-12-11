@@ -10,6 +10,4 @@ WORKDIR /app
 
 RUN pip install -r /app/requirments.txt
 
-RUN pip install pdfplumber
-
 ENTRYPOINT ["streamlit", "run", "src/app.py", "--server.port=8080", "--server.address=0.0.0.0"]

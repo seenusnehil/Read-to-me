@@ -1,5 +1,5 @@
 import os
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] ='/home/revanth/Documents/GitHub/Read-to-me/google.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] ='google.json'
 from google.cloud import vision
 import re
 from PIL import Image

@@ -1,7 +1,10 @@
 import requests
+import aiohttp
 import time
+import asyncio
 
-def get_uuid_from_api(data,voice,pace):
+async def get_uuid_from_api(data,voice,pace):
+    session = aiohttp.ClientSession()
     print('Checking data that has to been send',voice)
     uuid=None
     url = "https://api.uberduck.ai/speak"
@@ -17,33 +20,31 @@ def get_uuid_from_api(data,voice,pace):
         "authorization": "Basic cHViX3ZjbGlseWh2bXBqcXpqcnB4dzpwa19mMTU5MWRlNi01ZjE4LTQzNTgtYTUwZi0zZTUzOGI2MzAzMjE="
     }
 
-    response = requests.post(url, json=payload, headers=headers)
-    time.sleep(20)
-
-    print(response.text)
-
-    data=response.json()
-
-   
-
+    async with session.post(url, json=payload, headers=headers) as response:
+        data= await response.json()
+    
     uuid=data['uuid']
 
 
     url = f'https://api.uberduck.ai/speak-status?uuid={str(uuid)}'
 
-    '' ""
     print(url)
 
     headers = {"accept": "application/json"}
-    time.sleep(10)
 
-    response = requests.get(url, headers=headers)
+    path = None
 
-    print(response.text)
+    while(path == None):
+        async with session.get(url, headers=headers) as response:
+        
+            data = await response.json()
+            path = data['path']
 
-    data=response.json()
+    
+    url = path
+    
 
-    return data['path']
+    return url
 
 def get_audio_file_from_uuid(number):
 
@@ -62,11 +63,20 @@ def get_audio_file_from_uuid(number):
 
     return data['path']
 
-def download_audio_file_from_url(url):
+async def download_audio_file_from_url(url):
     bool=False
-    response = requests.get(url)
+    
+    session = aiohttp.ClientSession()
+    time.sleep(10)
     print('Downloading File from the URL')
-    open("audio_files/audio_output.mp3", "wb").write(response.content) 
+    print(url)
+    async with session.get(url) as response:
+        with open("audio_files/audio_output.mp3", 'wb') as fd:
+            async for chunk in response.content.iter_chunked(10):
+                fd.write(chunk)
+
+
+    #open("audio_files/audio_output.mp3", "wb").write(content) 
 
     print('Downloaded file from the server')
     bool=True

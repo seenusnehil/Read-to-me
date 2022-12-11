@@ -1,18 +1,19 @@
 import streamlit as st
 import streamlit.components.v1 as stc
-import pdfplumber
 from PIL import Image
 from text_to_audio import get_audio_file_from_uuid,get_uuid_from_api,download_audio_file_from_url
 import io
 from utils import load_image
 from ocr import detect_text
 
+import asyncio
+
 
 from google.cloud import vision
 import io
 
 import os
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] ='/home/revanth/Documents/GitHub/Read-to-me/google.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] ='google.json'
 from google.cloud import vision
 import re
 from PIL import Image
@@ -22,7 +23,7 @@ from io import BytesIO
 st.set_page_config(page_title='OCR',page_icon=':smiley:',initial_sidebar_state='collapsed')
 
 
-def main():
+async def main():
 
     HTML = """
     <div style="background-color:#464e5f;padding:10px;border-radius:10px">
@@ -84,14 +85,14 @@ def main():
 
                 st.write('Processing audio file')
 
-                uuid=get_uuid_from_api(data=text[0],voice=str(selected_voice),pace=selected_pace)
+                uuid = await get_uuid_from_api(data=text[0],voice=str(selected_voice),pace=selected_pace)
                 print(uuid)
 
                 # audio_file_url=get_audio_file_from_uuid(uuid)
                 # print(audio_file_url)
 
 
-                audio_file=download_audio_file_from_url(uuid)
+                audio_file= await download_audio_file_from_url(uuid)
                 print(audio_file)
 
                 if audio_file:
@@ -119,4 +120,5 @@ def main():
         # st.write(uploaded_pdf)
 
 if __name__=='__main__':
-    main()
+    loop = asyncio.new_event_loop()
+    loop.run_until_complete(main())
