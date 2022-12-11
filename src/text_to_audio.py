@@ -2,7 +2,7 @@ import requests
 import time
 
 def get_uuid_from_api(data,voice,pace):
-    print('Checking data that has to been send',data)
+    print('Checking data that has to been send',voice)
     uuid=None
     url = "https://api.uberduck.ai/speak"
 
